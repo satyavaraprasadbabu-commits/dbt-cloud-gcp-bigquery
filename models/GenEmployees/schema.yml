@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: bigquery_source
+    schema: Staging
+    
+    tables:
+      - name: GENEMPLOYEES
+models:
+    - name: transformed_employees
+      description: "Employees transformed table"
+      columns:
+          - name: EMPLOYEEID
+            description: "The primary key for this table"
+            tests:
+                - unique
+                - not_null
+      config:
+          materialized: table
+          alias: employees_init_transdata
+ 
+    
