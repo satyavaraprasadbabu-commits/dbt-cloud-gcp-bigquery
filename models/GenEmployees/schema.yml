@@ -6,17 +6,30 @@ sources:
     
     tables:
       - name: GENEMPLOYEES
+
 models:
     - name: transformed_employees
       description: "Employees transformed table"
-      columns:
-          - name: EMPLOYEEID
-            description: "The primary key for this table"
-            tests:
-                - unique
-                - not_null
       config:
-          materialized: table
-          alias: employees_init_transdata
- 
-    
+        materialized: table
+        alias: employees_init_transdata
+      columns:
+        - name: EMPLOYEEID
+          description: "The primary key for this table"
+          tests:
+            - unique
+            - not_null
+
+    - name: employees_ephemeral_model
+      description: "Creates CTE inline view to fetch the data when processing models"
+      config:
+        materialized: ephemeral
+    - name: employees_updates
+      config:
+        materialized: incremental
+        alias: employees_incremental  
+      columns:
+        - name: EMPLOYEEID
+          tests:
+            - unique
+            - not_null
